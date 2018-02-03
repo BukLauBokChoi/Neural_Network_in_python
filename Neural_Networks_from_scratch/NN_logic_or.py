@@ -7,10 +7,6 @@ class NeuralNetwork:
         np.random.seed(0)
         self.weight = np.random.random((2, 1))
         self.bias = np.random.random((4, 1))
-        print("weights before training:")
-        print(self.weight)
-        print("biases before training:")
-        print(self.bias)
 
     # sigmoid activation function
     def sigmoid(self, val):
@@ -50,7 +46,11 @@ class NeuralNetwork:
             self.weight -= w_adj
             self.bias -= bias_adj
 
-
+        print("weights before training:")
+        print(self.weight)
+        print("biases before training:")
+        print(self.bias)
+        
         print("Given the inputs:")
         print(in_data)
         print("The network predicted the outputs:")
