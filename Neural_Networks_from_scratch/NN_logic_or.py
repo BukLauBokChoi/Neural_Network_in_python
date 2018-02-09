@@ -2,12 +2,6 @@ import numpy as np
 
 class NeuralNetwork:
 
-    # initialize weights and biases
-    def __init__(self):
-        np.random.seed(0)
-        self.weight = np.random.random((2, 1))
-        self.bias = np.random.random((4, 1))
-
     # sigmoid activation function
     def sigmoid(self, val):
         return 1/(1+np.exp(-val))
@@ -17,71 +11,71 @@ class NeuralNetwork:
         return self.sigmoid(val) * (1-self.sigmoid(val))
 
     # start training
-    # input data, output data, learning rate, epochs
-    def Train(self, X, Y, lr, epochs):
-        
+    def Train(self, X, Y, w1, b1, lr, epochs):
         # training loop
         for i in range(epochs):
-            
+
             # forward propagate
-            # weighted sum plus the bias
-            Z = np.dot(X, self.weight) + self.bias
+            # weighted sum
+            Z = np.dot(X, w1) + b1
+
             # prediction
             P = self.sigmoid(Z)
-            
 
             # back propagate
-            # SSE sum of squared error
+            # calculate the cost using SSE- sum of squared errors
             cost = (P - Y) ** 2
 
-            # partial derivatives of the cost with respect to the parameters
-            dcost_dw = np.dot(X.T, 2*(P-Y) * self.deriv_sigmoid(P))
-            dcost_db = 2*(P-Y) * self.deriv_sigmoid(P)
+            # calculate the partial derivatives with respect to each parameter
+            dcost_w1 = np.dot(X.T, 2*(P-Y) * self.deriv_sigmoid(P))
+            dcost_b1 = sum(2*(P-Y) * self.deriv_sigmoid(P))
 
-            # how much we will change the parameters
-            w_adj = dcost_dw * lr
-            bias_adj = dcost_db * lr
+            # How much we should update the parameters
+            w1_update = dcost_w1 * lr
+            b1_update = dcost_b1 * lr
 
             # update weights and biases
-            self.weight -= w_adj
-            self.bias -= bias_adj
+            w1 -= w1_update
+            b1 -= b1_update
 
-        print("weights before training:")
-        print(self.weight)
-        print("biases before training:")
-        print(self.bias)
-        
         print("Given the inputs:")
         print(in_data)
         print("The network predicted the outputs:")
         print(P)
-        print("And the correct outputs are:")
+        print("And the correct outputs were:")
         print(out_data)
-
-        print("new weights")
-        print(self.weight)
-        print("new biases")
-        print(self.bias)
+        print(w1)
+        print(b1)
 
 
 if __name__ == "__main__":
 
-    # input data
+    # training data
     in_data = np.array([[0, 0],
                         [0, 1],
                         [1, 0],
                         [1, 1]])
 
-    # output data
     out_data = np.array([[0],
                          [1],
                          [1],
                          [1]])
 
+
+    # number of neurons in each layer
+    n_inputs = 2
+    n_outputs = 1
+    # weights and biases
+    np.random.seed()
+    w1 = np.random.random((n_inputs, n_outputs))
+    b1 = np.random.random((n_outputs, n_outputs))
+
     # hyper parameters
-    learning_rate = 0.04
+    learning_rate = 0.1
     epochs = 10000
 
     nn = NeuralNetwork()
 
-    print(nn.Train(in_data, out_data, learning_rate, epochs))
+    nn.Train(in_data, out_data, w1, b1, learning_rate, epochs)
+
+
