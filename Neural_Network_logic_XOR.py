@@ -43,7 +43,7 @@ num_epochs = 10000
 
 # forwardpropagation
 # input -> hidden
-l2_y = tf.nn.relu(tf.matmul(x, l2_w) + l2_b)
+l2_y = tf.nn.tanh(tf.matmul(x, l2_w) + l2_b)
 
 # hidden -> output
 l3_y = tf.nn.sigmoid(tf.matmul(l2_y, l3_w) + l3_b)
